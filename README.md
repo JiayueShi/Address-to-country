@@ -1,3 +1,5 @@
 # GIS tools
 
-1. Upload geojson to PostgreSQL
+0. Upload geojson to PostgreSQL
+
+This tool can help you transform geojson to PostGIS. The code can automatically create spatial index.
