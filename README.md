@@ -4,4 +4,4 @@
 
     This tool can help you transform geojson to PostGIS. The code can automatically create spatial index.
 
-1. Create GeoPandas dataframe based on csv file
+1. Create GeoPandas dataframe based on csv file, and save dataframe into geojson.
