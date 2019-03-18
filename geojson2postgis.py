@@ -39,3 +39,36 @@ class DBOperations:
         self.conn = psycopg2.connect("dbname=" + self.dbname + " user=" + self.username + " host=" +
                                      self.host + " password=" + self.password)
         self.cur = self.conn.cursor()
+
+if __name__ == "__main__":
+    # An example
+    username = 'postgres'
+    geo_type = "Point"
+
+    my_db = DBOperations(username, password, dbname, host)
+    my_db.geojson2postgis(filepath, table_name, geo_type)
+
+    my_db.create_conn_and_cursor()
+
+    table1, table2 = "t1", "t2"
+    # los angles utm zone is 11S, so we need transform 4326 to 32711; Since we need get 'meter' distance
+    # example sql
+    sql1 = '''select t1_id, dis
+            from
+            (select {0}.index as t1_id, 
+            min(st_distance(ST_Transform({1}.geometry, 32711), ST_Transform({0}.geometry, 32711))) dis
+            from {1}, {0} group by {0}.index) as res
+            where dis < 5;'''.format(table1, table2)
+
+    try:
+        my_db.cur.execute(sql1)
+    except:
+        print("I can't SELECT from ????")
+
+    rows = my_db.cur.fetchall()
+    print("Rows:")
+    for row in rows:
+        print("   ", row[1])
+
+    my_db.cur.close()
+    my_db.conn.close()
