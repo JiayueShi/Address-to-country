@@ -1,0 +1,10 @@
+import pandas as pd
+from shapely.geometry import Point, LineString, Polygon
+import geopandas as gpd
+
+if __name__ == "__main__":
+    # make sure csv file has lon and lat column.
+    latlon_df = pd.read_csv('my_data.csv')
+    geom = latlon_df.apply(lambda x: Point([x['lon'], x['lat']]), axis=1)
+    latlon_df = gpd.GeoDataFrame(latlon_df, geometry=geom)
+    latlon_df.crs = {'init': 'epsg:4326'}
