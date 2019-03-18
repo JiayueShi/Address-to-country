@@ -8,3 +8,6 @@ if __name__ == "__main__":
     geom = latlon_df.apply(lambda x: Point([x['lon'], x['lat']]), axis=1)
     latlon_df = gpd.GeoDataFrame(latlon_df, geometry=geom)
     latlon_df.crs = {'init': 'epsg:4326'}
+    
+    # transform geo-dataframe to geojson
+    latlon_df.to_file('my_geojson.geojson', driver="GeoJSON")
